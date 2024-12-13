@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego del Botón</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+        #button {
+            position: absolute;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Puntuación: 0</div>
+    <button id="button">¡Haz clic!</button>
+    <script>
+        let score = 0;
+let delay = 5000; // Empezar en 5 segundos
+const minDelay = 300; // Mínimo de 0.3 segundos
+const decrement = 100; // Disminución de 0.1 segundos
+
+const button = document.getElementById('button');
+const scoreDisplay = document.getElementById('score');
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - button.offsetWidth);
+    const y = Math.random() * (window.innerHeight - button.offsetHeight);
+    button.style.left = `${x}px`;
+    button.style.top = `${y}px`;
+}
+
+function updateButton() {
+    score++;
+    scoreDisplay.textContent = `Puntuación: ${score}`;
+    moveButton();
+    if (delay > minDelay) {
+        delay -= decrement;
+    }
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+        alert('¡Tiempo agotado! Puntuación final: ' + score);
+        resetGame();
+    }, delay);
+}
+
+function resetGame() {
+    score = 0;
+    delay = 5000;
+    scoreDisplay.textContent = `Puntuación: ${score}`;
+    moveButton();
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+        alert('¡Tiempo agotado! Puntuación final: ' + score);
+        resetGame();
+    }, delay);
+}
+
+let timeoutId = setTimeout(() => {
+    alert('¡Tiempo agotado! Puntuación final: ' + score);
+    resetGame();
+}, delay);
+
+button.addEventListener('click', updateButton);
+moveButton();
+
+    </script>
+</body>
+</html>
+
